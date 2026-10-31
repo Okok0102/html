@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1b251e">
+    <meta name="description" content="Przyjazny przewodnik po rasach psów spotykanych w Polsce, z praktycznymi wskazówkami i kalkulatorem wieku psa.">
+    <title>Moss &amp; Whiskers | Przewodnik po psach</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --page: #1b251e;
+            --surface: #242f26;
+            --surface-raised: #2b382d;
+            --surface-tint: #344435;
+            --text: #e5ecdf;
+            --muted: #b0bfaa;
+            --line: #405242;
+            --green: #a7c49c;
+            --green-deep: #c3d9b8;
+            --accent-soft: #3c523d;
+            --shadow: 0 16px 42px rgb(0 0 0 / 18%);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-width: 320px;
+            min-height: 100vh;
+            margin: 0;
+            background: var(--page);
+            color: var(--text);
+            font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+            line-height: 1.5;
+            transition: background-color 180ms ease, color 180ms ease;
+        }
+
+        body.light-mode {
+            color-scheme: light;
+            --page: #e4e9e0;
+            --surface: #edf1e9;
+            --surface-raised: #f1f3ed;
+            --surface-tint: #d9e2d4;
+            --text: #29372d;
+            --muted: #68776a;
+            --line: #d3ddcf;
+            --green: #567456;
+            --green-deep: #3e5b42;
+            --accent-soft: #dce8d8;
+            --shadow: 0 16px 42px rgb(46 64 46 / 8%);
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .site-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 22px 28px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 11px;
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            place-items: center;
+            border-radius: 15px;
+            background: var(--green-deep);
+            color: var(--surface-raised);
+            font-size: 1.25rem;
+        }
+
+        .brand-name {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.12rem;
+            font-weight: 700;
+            letter-spacing: -0.035em;
+        }
+
+        .header-actions,
+        .main-nav {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .header-actions {
+            gap: 8px;
+        }
+
+        .main-nav a {
+            color: var(--muted);
+            font-size: 0.88rem;
+            text-decoration: none;
+            transition: color 150ms ease;
+        }
+
+        .main-nav a:hover {
+            color: var(--green-deep);
+        }
+
+        .theme-toggle,
+        .language-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 40px;
+            padding: 0 13px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: var(--surface);
+            color: var(--text);
+            font-size: 0.8rem;
+            font-weight: 650;
+            transition: background-color 150ms ease, transform 150ms ease;
+        }
+
+        .theme-toggle:hover,
+        .language-toggle:hover {
+            background: var(--surface-tint);
+        }
+
+        .theme-toggle:active,
+        .language-toggle:active {
+            transform: scale(0.97);
+        }
+
+        .page-content {
+            width: min(100% - 48px, 1120px);
+            margin: 0 auto;
+            padding: 18px 0 64px;
+        }
+
+        .hero {
+            position: relative;
+            display: grid;
+            min-height: 340px;
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: center;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 30px;
+            background: var(--surface-tint);
+            box-shadow: var(--shadow);
+        }
+
+        .hero-copy {
+            z-index: 1;
+            padding: 42px clamp(28px, 6vw, 72px);
+        }
+
+        .eyebrow {
+            margin: 0 0 13px;
+            color: var(--green);
+            font-size: 0.72rem;
+            font-weight: 750;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin-top: 0;
+        }
+
+        h1 {
+            max-width: 520px;
+            margin-bottom: 16px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(2.6rem, 6vw, 4.7rem);
+            font-weight: 500;
+            letter-spacing: -0.065em;
+            line-height: 0.99;
+        }
+
+        .hero-copy > p:not(.eyebrow) {
+            max-width: 440px;
+            margin-bottom: 23px;
+            color: var(--muted);
+            font-size: 0.98rem;
+        }
+
+        .hero-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--green-deep);
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .hero-link:hover {
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            min-height: 340px;
+            object-fit: cover;
+            object-position: center;
+            mask-image: linear-gradient(90deg, transparent 0%, #000 24%);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 24px;
+            margin: 58px 0 22px;
+        }
+
+        .section-heading h2 {
+            margin: 0 0 5px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 500;
+            letter-spacing: -0.05em;
+        }
+
+        .section-heading p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .section-heading .breed-cost-note {
+            max-width: 760px;
+            margin-top: 9px;
+            font-size: 0.78rem;
+            line-height: 1.6;
+        }
+
+        .breed-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 19px;
+        }
+
+        .search-box {
+            width: min(100%, 300px);
+            min-height: 43px;
+            padding: 0 14px;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            outline: none;
+            background: var(--surface);
+            color: var(--text);
+        }
+
+        .search-box::placeholder {
+            color: var(--muted);
+        }
+
+        .search-box:focus,
+        .age-input:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--green) 20%, transparent);
+        }
+
+        .filter-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+        }
+
+        .filter-button {
+            min-height: 37px;
+            padding: 0 13px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: transparent;
+            color: var(--muted);
+            font-size: 0.78rem;
+            transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+        }
+
+        .filter-button:hover,
+        .filter-button.active {
+            border-color: var(--green);
+            background: var(--green);
+            color: var(--surface-raised);
+        }
+
+        .breed-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .breed-card {
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            background: var(--surface);
+            box-shadow: var(--shadow);
+            transition: transform 170ms ease, box-shadow 170ms ease;
+        }
+
+        .breed-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 46px rgb(46 64 46 / 13%);
+        }
+
+        .breed-card[hidden] {
+            display: none;
+        }
+
+        .breed-nameplate {
+            display: grid;
+            min-height: 126px;
+            padding: 20px;
+            place-items: center;
+            border-bottom: 1px solid var(--line);
+            background: linear-gradient(135deg, var(--surface-tint), var(--accent-soft));
+            text-align: center;
+        }
+
+        .breed-nameplate h3 {
+            margin: 0;
+            color: var(--green-deep);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(1.55rem, 2.4vw, 2rem);
+            font-weight: 600;
+            letter-spacing: -0.035em;
+            line-height: 1.15;
+        }
+
+        .breed-info {
+            padding: 19px 19px 20px;
+        }
+
+        .breed-title-row {
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 7px;
+        }
+
+        .lifespan {
+            flex: 0 0 auto;
+            padding: 5px 8px;
+            border-radius: 8px;
+            background: var(--accent-soft);
+            color: var(--green-deep);
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .breed-info > p {
+            min-height: 42px;
+            margin-bottom: 14px;
+            color: var(--muted);
+            font-size: 0.82rem;
+            line-height: 1.6;
+        }
+
+        .breed-notes {
+            display: grid;
+            gap: 8px;
+            margin: 0 0 14px;
+        }
+
+        .breed-notes p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.75rem;
+            line-height: 1.55;
+        }
+
+        .breed-notes strong {
+            color: var(--text);
+        }
+
+        .breed-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .breed-tag {
+            padding: 5px 9px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            color: var(--muted);
+            font-size: 0.68rem;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            padding: 30px;
+            border: 1px dashed var(--line);
+            border-radius: 16px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .age-guide {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 30px;
+            margin-top: 58px;
+            padding: clamp(24px, 5vw, 42px);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            background: var(--surface-tint);
+        }
+
+        .age-guide h2 {
+            margin-bottom: 10px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 500;
+            letter-spacing: -0.05em;
+        }
+
+        .age-guide-copy p {
+            max-width: 490px;
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.88rem;
+            line-height: 1.7;
+        }
+
+        .calculator {
+            padding: 21px;
+            border: 1px solid var(--line);
+            border-radius: 17px;
+            background: var(--surface);
+        }
+
+        .calculator label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .calculator-row {
+            display: flex;
+            gap: 9px;
+        }
+
+        .age-input {
+            width: 100%;
+            min-width: 0;
+            min-height: 44px;
+            padding: 0 12px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            outline: none;
+            background: var(--surface-raised);
+            color: var(--text);
+        }
+
+        .age-input:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .age-method-note {
+            margin: 12px 0 0;
+            color: var(--muted);
+            font-size: 0.74rem;
+            line-height: 1.6;
+        }
+
+        .calculate-button {
+            flex: 0 0 auto;
+            min-height: 44px;
+            padding: 0 15px;
+            border: 0;
+            border-radius: 10px;
+            background: var(--green-deep);
+            color: var(--surface-raised);
+            font-size: 0.8rem;
+            font-weight: 700;
+            transition: filter 150ms ease, transform 150ms ease;
+        }
+
+        .calculate-button:hover {
+            filter: brightness(1.1);
+        }
+
+        .calculate-button:active {
+            transform: scale(0.97);
+        }
+
+        .age-result {
+            min-height: 1.5em;
+            margin: 12px 0 0;
+            color: var(--green-deep);
+            font-size: 0.84rem;
+            font-weight: 650;
+        }
+
+        .site-footer {
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            margin-top: 44px;
+            padding-top: 18px;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 0.76rem;
+        }
+
+        :focus-visible {
+            outline: 3px solid color-mix(in srgb, var(--green) 48%, transparent);
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 850px) {
+            .hero {
+                grid-template-columns: 1fr 0.8fr;
+            }
+
+            .breed-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 620px) {
+            .site-header {
+                padding: 15px 18px;
+            }
+
+            .main-nav {
+                display: none;
+            }
+
+            .page-content {
+                width: min(100% - 32px, 1120px);
+                padding-top: 8px;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-copy {
+                padding: 34px 28px 25px;
+            }
+
+            .hero-image {
+                height: 210px;
+                min-height: 0;
+                mask-image: linear-gradient(180deg, transparent 0%, #000 20%);
+            }
+
+            .section-heading {
+                align-items: start;
+                flex-direction: column;
+                gap: 7px;
+                margin-top: 43px;
+            }
+
+            .breed-controls {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .breed-grid,
+            .age-guide {
+                grid-template-columns: 1fr;
+            }
+
+            .age-guide {
+                gap: 22px;
+                margin-top: 43px;
+            }
+
+            .site-footer {
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="#" aria-label="Strona główna Moss &amp; Whiskers" data-i18n-aria-label="brandHome">
+            <span class="brand-mark" aria-hidden="true">🐕</span>
+            <span class="brand-name">Moss &amp; Whiskers</span>
+        </a>
+        <nav class="main-nav" aria-label="Nawigacja główna" data-i18n-aria-label="navLabel">
+            <a href="#breeds" data-i18n="navBreeds">Rasy psów</a>
+            <a href="#age-guide" data-i18n="navAge">Kalkulator wieku</a>
+        </nav>
+        <div class="header-actions">
+            <button class="language-toggle" id="language-toggle" type="button" aria-label="Zmień język na angielski">
+                EN
+            </button>
+            <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="true">
+                <span id="theme-icon" aria-hidden="true">☀</span>
+                <span id="theme-label">Tryb jasny</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero-copy">
+                <p class="eyebrow" data-i18n="heroEyebrow">Przewodnik po psich towarzyszach</p>
+                <h1 id="hero-title" data-i18n="heroTitle">Poznaj psa dla siebie.</h1>
+                <p data-i18n="heroDescription">Poznaj popularne rasy, ich zalety i potrzeby — także te, o których warto wiedzieć przed adopcją.</p>
+                <a class="hero-link" href="#breeds"><span data-i18n="heroLink">Poznaj rasy</span> <span aria-hidden="true">↓</span></a>
+            </div>
+            <img
+                class="hero-image"
+                src="https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&amp;fit=crop&amp;w=1100&amp;q=85"
+                alt="Przyjazny golden retriever na świeżym powietrzu"
+                data-i18n-alt="heroAlt"
+                fetchpriority="high"
+            >
+        </section>
+
+        <section id="breeds" aria-labelledby="breeds-title">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow" data-i18n="breedsEyebrow">Przydatny przewodnik</p>
+                    <h2 id="breeds-title" data-i18n="breedsTitle">Kilku psich ulubieńców</h2>
+                    <p data-i18n="breedsIntro">Poniższe rasy często spotyka się w polskich domach. Mniejsza potrzeba ruchu nie oznacza, że pies nie potrzebuje codziennej opieki.</p>
+                    <p class="breed-cost-note" data-i18n="breedCostNote">Niższy koszt adopcji nie oznacza niskich kosztów utrzymania. Dostępność ras w schroniskach i fundacjach się zmienia; przed adopcją lub zakupem uwzględnij karmę, weterynarza, pielęgnację i szkolenie.</p>
+                </div>
+            </div>
+
+            <div class="breed-controls">
+                <input class="search-box" id="breed-search" type="search" placeholder="Szukaj rasy psa..." aria-label="Szukaj rasy psa" data-i18n-placeholder="searchPlaceholder" data-i18n-aria-label="searchLabel">
+                <div class="filter-list" role="group" aria-label="Filtruj rasy według potrzeb" data-i18n-aria-label="filterLabel">
+                    <button class="filter-button active" type="button" data-filter="all" aria-pressed="true" data-i18n="filterAll">Wszystkie</button>
+                    <button class="filter-button" type="button" data-filter="calmer" aria-pressed="false" data-i18n="filterCalmer">Spokojniejsze</button>
+                    <button class="filter-button" type="button" data-filter="small" aria-pressed="false" data-i18n="filterSmall">Małe</button>
+                    <button class="filter-button" type="button" data-filter="short-coat" aria-pressed="false" data-i18n="filterShortCoat">Krótka sierść</button>
+                </div>
+            </div>
+
+            <div class="breed-grid" id="breed-grid" aria-live="polite">
+                <article class="breed-card" data-name="shih tzu" data-name-pl="shih tzu" data-traits="calmer small">
+                    <div class="breed-nameplate"><h3>Shih Tzu</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row">
+                            <span class="lifespan" data-i18n="shihLife">10–16 lat</span>
+                        </div>
+                        <p data-i18n="shihDescription">Pogodny pies do towarzystwa, który często dobrze odnajduje się w mieszkaniu i lubi bliski kontakt z domownikami.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="shihBenefit">Mały rozmiar i umiarkowana aktywność ułatwiają życie w mieszkaniu, a wspólna zabawa może zaspokoić część potrzeb ruchowych.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="shihConsider">Długa sierść wymaga regularnego czesania lub strzyżenia, a krótkie spacery nadal są potrzebne codziennie; pielęgnacja może kosztować.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagCalm">Spokojniejszy</span><span class="breed-tag" data-i18n="tagSmall">Mały</span><span class="breed-tag" data-i18n="tagGrooming">Pielęgnacja</span></div>
+                    </div>
+                </article>
+
+                <article class="breed-card" data-name="maltese" data-name-pl="maltańczyk maltańczyki" data-traits="calmer small">
+                    <div class="breed-nameplate"><h3 data-i18n="malteseName">Maltańczyk</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row">
+                            <span class="lifespan" data-i18n="malteseLife">12–15 lat</span>
+                        </div>
+                        <p data-i18n="malteseDescription">Wesoły, niewielki pies, który często dobrze odnajduje się w mieszkaniu i mocno przywiązuje się do opiekunów.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="malteseBenefit">Niewielki pies zwykle łatwo mieści się w małym domu, a spacery i zabawę można dopasować do spokojniejszego planu dnia.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="malteseConsider">Jedwabista sierść wymaga częstego czesania lub wizyt u groomera; pies może szczekać i źle znosić długą samotność.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagSmall">Mały</span><span class="breed-tag" data-i18n="tagCompanion">Towarzyski</span><span class="breed-tag" data-i18n="tagGrooming">Pielęgnacja</span></div>
+                    </div>
+                </article>
+
+                <article class="breed-card" data-name="french bulldog" data-name-pl="buldog francuski buldogi francuskie" data-traits="calmer small">
+                    <div class="breed-nameplate"><h3 data-i18n="frenchName">Buldog francuski</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row">
+                            <span class="lifespan" data-i18n="frenchLife">10–12 lat</span>
+                        </div>
+                        <p data-i18n="frenchDescription">Towarzyski pies o niewielkim wzroście, często wybierany do życia w mieście i blisko ludzi.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="frenchBenefit">Zwykle nie potrzebuje intensywnego biegania, a niewielki rozmiar ułatwia codzienne życie w mieszkaniu.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="frenchConsider">Problemy z oddychaniem i przegrzewaniem są częste; badania, leczenie i ograniczenia wysiłku mogą oznaczać wysokie koszty.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagSmall">Mały</span><span class="breed-tag" data-i18n="tagCity">Do miasta</span><span class="breed-tag" data-i18n="tagHealth">Zdrowie</span></div>
+                    </div>
+                </article>
+
+                <article class="breed-card" data-name="yorkshire terrier yorkie" data-name-pl="yorkshire terrier york yorki" data-traits="small">
+                    <div class="breed-nameplate"><h3 data-i18n="yorkieName">Yorkshire Terrier</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row">
+                            <span class="lifespan" data-i18n="yorkieLife">11–15 lat</span>
+                        </div>
+                        <p data-i18n="yorkieDescription">Ciekawski, odważny terier, który może mieszkać w mieście, jeśli ma codzienny ruch i zajęcie dla bystrego umysłu.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="yorkieBenefit">Mały rozmiar ułatwia podróżowanie i życie w niewielkim mieszkaniu; aktywność można rozłożyć na kilka krótkich wyjść i zabaw.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="yorkieConsider">Wymaga pielęgnacji sierści i konsekwentnego szkolenia; może dużo szczekać, a delikatne ciało łatwo przypadkowo urazić.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagSmall">Mały</span><span class="breed-tag" data-i18n="tagCity">Do miasta</span><span class="breed-tag" data-i18n="tagGrooming">Pielęgnacja</span></div>
+                    </div>
+                </article>
+
+                <article class="breed-card" data-name="chihuahua" data-name-pl="chihuahua" data-traits="small">
+                    <div class="breed-nameplate"><h3>Chihuahua</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row">
+                            <span class="lifespan" data-i18n="chihuahuaLife">14–16 lat</span>
+                        </div>
+                        <p data-i18n="chihuahuaDescription">Bardzo mały i czujny pies, który może dobrze mieszkać w bloku, ale potrzebuje kontaktu, nauki i bezpiecznych spacerów.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="chihuahuaBenefit">Mały apetyt i niewielki rozmiar mogą ograniczyć część codziennych wydatków, a psa łatwo zabrać w podróż.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="chihuahuaConsider">Nadal potrzebuje spacerów, socjalizacji i szkolenia; bywa szczekliwy i wrażliwy na zimno, a problemy stomatologiczne mogą wymagać leczenia.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagSmall">Mały</span><span class="breed-tag" data-i18n="tagShortCoat">Krótka sierść</span><span class="breed-tag" data-i18n="tagTraining">Szkolenie</span></div>
+                    </div>
+                </article>
+
+                <article class="breed-card" data-name="pug" data-name-pl="mops mopsy" data-traits="calmer small short-coat">
+                    <div class="breed-nameplate"><h3 data-i18n="pugName">Mops</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row">
+                            <span class="lifespan" data-i18n="pugLife">13–15 lat</span>
+                        </div>
+                        <p data-i18n="pugDescription">Czuły i towarzyski pies, któremu zwykle odpowiada spokojny dom oraz bliskość opiekunów.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="pugBenefit">Zwykle wystarczają mu spokojne spacery i zabawa w domu, a krótka sierść jest łatwa w codziennej pielęgnacji.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="pugConsider">Problemy z oddychaniem, oczami i upałem mogą wymagać częstych wizyt u weterynarza; trzeba też pilnować masy ciała.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagSmall">Mały</span><span class="breed-tag" data-i18n="tagCompanion">Towarzyski</span><span class="breed-tag" data-i18n="tagHealth">Zdrowie</span></div>
+                    </div>
+                </article>
+
+                <article class="breed-card" data-name="labrador retriever labrador" data-name-pl="labrador retriever labrador" data-traits="">
+                    <div class="breed-nameplate"><h3 data-i18n="labradorName">Labrador Retriever</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row"><span class="lifespan" data-i18n="labradorLife">10–12 lat</span></div>
+                        <p data-i18n="labradorDescription">Przyjazny, popularny pies rodzinny, często spotykany także w schroniskach i organizacjach adopcyjnych.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="labradorBenefit">Zwykle chętnie współpracuje i szybko uczy się z nagrodami; adopcja dorosłego psa może zmniejszyć koszt zakupu i ułatwić ocenę jego charakteru.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="labradorConsider">Potrzebuje codziennego ruchu i zajęcia; dużo je, linieje i ma skłonność do tycia, więc karma i profilaktyka mogą kosztować.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagCompanion">Towarzyski</span><span class="breed-tag" data-i18n="tagTraining">Szkolenie</span></div>
+                    </div>
+                </article>
+
+                <article class="breed-card" data-name="german shepherd alsatian" data-name-pl="owczarek niemiecki owczarki niemieckie" data-traits="">
+                    <div class="breed-nameplate"><h3 data-i18n="shepherdName">Owczarek niemiecki</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row"><span class="lifespan" data-i18n="shepherdLife">9–13 lat</span></div>
+                        <p data-i18n="shepherdDescription">Znana, wszechstronna rasa, której psy często trafiają do adopcji; najlepiej czuje się przy zaangażowanym opiekunie.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="shepherdBenefit">Jest inteligentny, lojalny i zwykle dobrze reaguje na spokojne, regularne szkolenie; dorosłego psa można znaleźć przez fundację.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="shepherdConsider">Wymaga codziennego ruchu, pracy umysłowej i szkolenia; intensywnie linieje, a problemy ze stawami mogą generować koszty.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagTraining">Szkolenie</span><span class="breed-tag" data-i18n="tagHealth">Zdrowie</span></div>
+                    </div>
+                </article>
+
+                <article class="breed-card" data-name="golden retriever golden" data-name-pl="golden retriever golden" data-traits="">
+                    <div class="breed-nameplate"><h3 data-i18n="goldenName">Golden Retriever</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row"><span class="lifespan" data-i18n="goldenLife">10–12 lat</span></div>
+                        <p data-i18n="goldenDescription">Łagodny i popularny pies rodzinny, zwykle bardzo nastawiony na kontakt z ludźmi.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="goldenBenefit">Często jest cierpliwy i chętny do nauki; dorosłe psy czasem szukają domu przez organizacje adopcyjne.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="goldenConsider">Potrzebuje ruchu i towarzystwa, mocno linieje, a długa sierść wymaga czesania; duży pies oznacza też większe wydatki na karmę.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagCompanion">Towarzyski</span><span class="breed-tag" data-i18n="tagGrooming">Pielęgnacja</span></div>
+                    </div>
+                </article>
+
+                <article class="breed-card" data-name="beagle" data-name-pl="beagle" data-traits="short-coat">
+                    <div class="breed-nameplate"><h3>Beagle</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row"><span class="lifespan" data-i18n="beagleLife">12–15 lat</span></div>
+                        <p data-i18n="beagleDescription">Wesoły pies gończy średniej wielkości, popularny wśród rodzin i dostępny w niektórych fundacjach rasowych.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="beagleBenefit">Krótka sierść jest łatwa w pielęgnacji, a towarzyski charakter sprzyja wspólnym aktywnościom.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="beagleConsider">Silny węch i instynkt łowiecki utrudniają przywołanie; może głośno szczekać, potrzebuje ruchu i zabezpieczonych spacerów.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagShortCoat">Krótka sierść</span><span class="breed-tag" data-i18n="tagTraining">Szkolenie</span></div>
+                    </div>
+                </article>
+
+                <article class="breed-card" data-name="dachshund" data-name-pl="jamnik jamniki" data-traits="small">
+                    <div class="breed-nameplate"><h3 data-i18n="dachshundName">Jamnik</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row"><span class="lifespan" data-i18n="dachshundLife">12–16 lat</span></div>
+                        <p data-i18n="dachshundDescription">Mały, odważny pies o dużej osobowości; w Polsce występuje w kilku odmianach sierści i wielkości.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="dachshundBenefit">Kompaktowy rozmiar ułatwia życie w mieszkaniu, a krótkowłosa odmiana nie wymaga skomplikowanej pielęgnacji.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="dachshundConsider">Długi grzbiet wymaga ochrony przed częstym skakaniem i nadwagą; jamnik bywa uparty i potrzebuje cierpliwego szkolenia.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagSmall">Mały</span><span class="breed-tag" data-i18n="tagTraining">Szkolenie</span></div>
+                    </div>
+                </article>
+
+                <article class="breed-card" data-name="english cocker spaniel cocker spaniel" data-name-pl="cocker spaniel spaniel angielski" data-traits="">
+                    <div class="breed-nameplate"><h3 data-i18n="cockerName">Cocker Spaniel</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row"><span class="lifespan" data-i18n="cockerLife">12–15 lat</span></div>
+                        <p data-i18n="cockerDescription">Wesoły, średniej wielkości pies, który lubi wspólne spacery, zabawę i bliski kontakt z rodziną.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="cockerBenefit">Jest czuły i chętnie współpracuje; jego rozmiar bywa wygodny dla osób szukających psa mniejszego od retrievera.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="cockerConsider">Długie uszy i sierść wymagają regularnej pielęgnacji; potrzebuje codziennej aktywności, a zaniedbanie uszu zwiększa ryzyko infekcji.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagCompanion">Towarzyski</span><span class="breed-tag" data-i18n="tagGrooming">Pielęgnacja</span></div>
+                    </div>
+                </article>
+
+                <article class="breed-card" data-name="border collie" data-name-pl="border collie" data-traits="">
+                    <div class="breed-nameplate"><h3>Border Collie</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row"><span class="lifespan" data-i18n="borderLife">12–15 lat</span></div>
+                        <p data-i18n="borderDescription">Bardzo inteligentny pies pasterski, popularny wśród osób aktywnych i zainteresowanych szkoleniem.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="borderBenefit">Szybko się uczy i świetnie odnajduje w sportach oraz zadaniach; pasuje do opiekuna, który lubi codzienną aktywność.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="borderConsider">To nie jest łatwy wybór dla mało aktywnego domu: potrzebuje dużo ruchu, pracy umysłowej i konsekwentnego prowadzenia.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagTraining">Szkolenie</span><span class="breed-tag" data-i18n="tagActive">Aktywny</span></div>
+                    </div>
+                </article>
+
+                <article class="breed-card" data-name="jack russell terrier jack russell" data-name-pl="jack russell terrier" data-traits="small">
+                    <div class="breed-nameplate"><h3>Jack Russell Terrier</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row"><span class="lifespan" data-i18n="jackLife">13–16 lat</span></div>
+                        <p data-i18n="jackDescription">Mały, energiczny terier, który potrzebuje zajęć i aktywnego udziału opiekuna.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="jackBenefit">Jest bystry, wesoły i poręczny; zabawy węchowe oraz krótkie sesje treningowe łatwo włączyć do dnia.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="jackConsider">Mały rozmiar nie oznacza małych potrzeb: bywa głośny, ma silny instynkt pogoni i wymaga ruchu oraz zajęcia.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagSmall">Mały</span><span class="breed-tag" data-i18n="tagTraining">Szkolenie</span></div>
+                    </div>
+                </article>
+
+                <article class="breed-card" data-name="boxer" data-name-pl="bokser boksery" data-traits="short-coat">
+                    <div class="breed-nameplate"><h3 data-i18n="boxerName">Bokser</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row"><span class="lifespan" data-i18n="boxerLife">10–12 lat</span></div>
+                        <p data-i18n="boxerDescription">Wesoły, silny pies rodzinny, znany z przywiązania do ludzi i potrzeby wspólnej aktywności.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="boxerBenefit">Krótka sierść nie wymaga skomplikowanego czesania, a bokser często jest czuły i chętny do zabawy.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="boxerConsider">Jest duży i energiczny, potrzebuje szkolenia oraz ruchu; źle znosi upał, a zdrowie może oznaczać dodatkowe wydatki.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagShortCoat">Krótka sierść</span><span class="breed-tag" data-i18n="tagHealth">Zdrowie</span></div>
+                    </div>
+                </article>
+
+                <article class="breed-card" data-name="siberian husky husky" data-name-pl="husky syberyjski husky" data-traits="">
+                    <div class="breed-nameplate"><h3 data-i18n="huskyName">Husky syberyjski</h3></div>
+                    <div class="breed-info">
+                        <div class="breed-title-row"><span class="lifespan" data-i18n="huskyLife">12–14 lat</span></div>
+                        <p data-i18n="huskyDescription">Towarzyski pies zaprzęgowy, który najlepiej pasuje do aktywnego domu i bezpiecznego otoczenia.</p>
+                        <div class="breed-notes">
+                            <p><strong data-i18n="benefit">Zaleta:</strong> <span data-i18n="huskyBenefit">Jest wytrzymały, kontaktowy i uwielbia długie wyprawy; jego krótkie włosy okrywowe nie wymagają strzyżenia.</span></p>
+                            <p><strong data-i18n="consider">Warto wiedzieć:</strong> <span data-i18n="huskyConsider">Nie nadaje się do mało aktywnego trybu życia: potrzebuje dużo ruchu, intensywnie linieje i potrafi uciekać, jeśli ogród nie jest zabezpieczony.</span></p>
+                        </div>
+                        <div class="breed-tags"><span class="breed-tag" data-i18n="tagActive">Aktywny</span><span class="breed-tag" data-i18n="tagTraining">Szkolenie</span></div>
+                    </div>
+                </article>
+
+                <p class="no-results" id="no-results" hidden data-i18n="noResults">Nie znaleziono pasujących ras. Spróbuj innej nazwy lub filtra.</p>
+            </div>
+        </section>
+
+        <section class="age-guide" id="age-guide" aria-labelledby="age-title">
+            <div class="age-guide-copy">
+                <p class="eyebrow" data-i18n="ageEyebrow">Przydatne przybliżenie</p>
+                <h2 id="age-title" data-i18n="ageTitle">Ile lat miałby Twój pies w przeliczeniu na ludzkie?</h2>
+                <p data-i18n="ageDescription">Psy szybko dojrzewają w pierwszych dwóch latach. To przybliżenie liczy pierwszy rok jako około 15 lat człowieka, drugi jako kolejne 9, a każdy następny jako około 4 lata. Wielkość i rasa mają znaczenie — to ogólna wskazówka, nie ocena zdrowia.</p>
+            </div>
+            <form class="calculator" id="age-form">
+                <label for="dog-years" data-i18n="ageLabel">Wiek psa w latach i miesiącach</label>
+                <div class="calculator-row">
+                    <input class="age-input" id="dog-years" name="years" type="number" min="0" max="30" step="1" placeholder="Lata" aria-label="Wiek psa w latach" data-i18n-placeholder="yearsPlaceholder" data-i18n-aria-label="yearsAria" required>
+                    <input class="age-input" id="dog-months" name="months" type="number" min="0" max="11" step="1" placeholder="Najpierw wpisz 0 lat" aria-label="Dodatkowe miesiące dla psa poniżej roku" data-i18n-placeholder="monthsPlaceholder" data-i18n-aria-label="monthsAria" disabled>
+                    <button class="calculate-button" type="submit" data-i18n="calculate">Oblicz</button>
+                </div>
+                <p class="age-method-note" data-i18n="ageMethod">Miesiące wpisz tylko wtedy, gdy pies nie ma jeszcze roku. W pierwszym roku 12 miesięcy to orientacyjnie około 15 lat człowieka, czyli średnio 1,25 roku na miesiąc. To uproszczenie — rozwój psa nie przebiega równomiernie.</p>
+                <p class="age-result" id="age-result" role="status" aria-live="polite"></p>
+            </form>
+        </section>
+
+        <footer class="site-footer">
+            <span data-i18n="footerMade">Moss &amp; Whiskers · Dla wszystkich miłośników psów.</span>
+            <span data-i18n="footerNote">Cechy ras i długość życia są orientacyjne — każdy pies jest wyjątkowy.</span>
+        </footer>
+    </main>
+
+    <script>
+        const themeToggle = document.querySelector("#theme-toggle");
+        const themeLabel = document.querySelector("#theme-label");
+        const themeIcon = document.querySelector("#theme-icon");
+        const languageToggle = document.querySelector("#language-toggle");
+        const searchInput = document.querySelector("#breed-search");
+        const filterButtons = document.querySelectorAll(".filter-button");
+        const breedCards = document.querySelectorAll(".breed-card");
+        const noResults = document.querySelector("#no-results");
+        const ageForm = document.querySelector("#age-form");
+        const yearsInput = document.querySelector("#dog-years");
+        const monthsInput = document.querySelector("#dog-months");
+        const ageResult = document.querySelector("#age-result");
+        let activeFilter = "all";
+        let currentLanguage = "pl";
+
+        const englishText = {
+            brandHome: "Moss & Whiskers home",
+            navLabel: "Main navigation",
+            navBreeds: "Dog breeds",
+            navAge: "Age calculator",
+            darkMode: "Dark mode",
+            lightMode: "Light mode",
+            heroEyebrow: "A guide to canine companions",
+            heroTitle: "Meet your kind of dog.",
+            heroDescription: "Explore familiar breeds, their benefits, and what to consider before bringing one home.",
+            heroLink: "Meet the breeds",
+            heroAlt: "Friendly golden retriever outdoors",
+            breedsEyebrow: "Breeds found in Poland",
+            breedsTitle: "A few canine favourites",
+            breedsIntro: "These examples are breeds commonly seen in Polish homes. Lower exercise needs do not mean a dog needs no daily care.",
+            breedCostNote: "A lower adoption fee does not mean low ongoing costs. Shelter and rescue availability changes; budget for food, veterinary care, grooming, and training before adopting or buying.",
+            searchPlaceholder: "Search dog breeds...",
+            searchLabel: "Search dog breeds",
+            filterLabel: "Filter breeds by care needs",
+            filterAll: "All dogs",
+            filterCalmer: "Calmer pace",
+            filterSmall: "Small",
+            filterShortCoat: "Short coat",
+            shihLife: "10–16 years",
+            shihDescription: "A cheerful companion that often adapts well to apartment life and enjoys close company.",
+            benefit: "Why consider:",
+            consider: "Keep in mind:",
+            shihBenefit: "A small size and moderate activity can suit apartment living, while play at home meets some exercise needs.",
+            shihConsider: "The long coat needs regular brushing or clipping, and daily walks are still essential; grooming can add to costs.",
+            tagCalm: "Calmer",
+            tagSmall: "Small",
+            tagGrooming: "Grooming",
+            malteseName: "Maltese",
+            malteseLife: "12–15 years",
+            malteseDescription: "A cheerful, small dog that often adapts well to apartments and bonds closely with its people.",
+            malteseBenefit: "Its small size fits compact homes, and walks and play can work with a calmer daily routine.",
+            malteseConsider: "The silky coat needs frequent brushing or professional grooming; it may bark and struggle with long periods alone.",
+            tagCompanion: "Companion",
+            frenchName: "French Bulldog",
+            frenchLife: "10–12 years",
+            frenchDescription: "A sociable, small dog often chosen for city life and close companionship.",
+            frenchBenefit: "Usually does not need strenuous running, and its small size can suit apartment living.",
+            frenchConsider: "Breathing and overheating problems are common; tests, treatment, and exercise limits can mean high costs.",
+            tagCity: "City-friendly",
+            tagHealth: "Health care",
+            yorkieName: "Yorkshire Terrier",
+            yorkieLife: "11–15 years",
+            yorkieDescription: "A curious, bold terrier that can live in the city with daily activity and mental stimulation.",
+            yorkieBenefit: "Its small size suits travel and compact homes; activity can be split into short outings and play.",
+            yorkieConsider: "Needs coat care and consistent training; it may bark, and its small frame can be injured accidentally.",
+            chihuahuaLife: "14–16 years",
+            chihuahuaDescription: "A tiny, alert dog that can suit apartment life but still needs companionship, training, and safe walks.",
+            chihuahuaBenefit: "Its small size and appetite may reduce some everyday costs, and it is easy to bring along.",
+            chihuahuaConsider: "Still needs walks, socialisation, and training; it may bark and feel cold, while dental problems can need treatment.",
+            tagShortCoat: "Short coat",
+            tagTraining: "Training",
+            pugName: "Pug",
+            pugLife: "13–15 years",
+            pugDescription: "An affectionate, sociable dog that often enjoys a calm home and close company.",
+            pugBenefit: "Gentle walks and indoor play are often enough, and its short coat is simple to maintain.",
+            pugConsider: "Breathing, eye, and heat problems can mean frequent vet visits; weight also needs careful management.",
+            labradorName: "Labrador Retriever",
+            labradorLife: "10–12 years",
+            labradorDescription: "A friendly, popular family dog that is also seen in shelters and rescue organisations.",
+            labradorBenefit: "Usually eager to work with people and quick to learn with rewards; adopting an adult may cost less upfront and make its temperament easier to assess.",
+            labradorConsider: "Needs daily exercise and activities; it eats a lot, sheds, and can gain weight, so food and preventive care add up.",
+            shepherdName: "German Shepherd",
+            shepherdLife: "9–13 years",
+            shepherdDescription: "A familiar, versatile breed, often rehomed and best suited to a committed owner.",
+            shepherdBenefit: "Intelligent, loyal, and often responsive to calm, consistent training; adult dogs may be available through rescues.",
+            shepherdConsider: "Needs daily exercise, mental work, and training; sheds heavily, and joint problems can add veterinary costs.",
+            goldenName: "Golden Retriever",
+            goldenLife: "10–12 years",
+            goldenDescription: "A gentle, popular family dog that is usually very people-oriented.",
+            goldenBenefit: "Often patient and eager to learn; adult dogs sometimes need homes through rescue organisations.",
+            goldenConsider: "Needs exercise and company, sheds heavily, and its long coat needs brushing; a large dog also means higher food costs.",
+            beagleLife: "12–15 years",
+            beagleDescription: "A cheerful, medium-sized scent hound, popular with families and sometimes available through breed rescues.",
+            beagleBenefit: "Its short coat is easy to maintain, and its sociable nature suits shared activities.",
+            beagleConsider: "A strong nose and hunting instinct can make recall difficult; it may be vocal and needs exercise and secure walks.",
+            dachshundName: "Dachshund",
+            dachshundLife: "12–16 years",
+            dachshundDescription: "A small, bold dog with a big personality; Poland has several coat and size varieties.",
+            dachshundBenefit: "Its compact size suits smaller homes, and the smooth-coated variety needs little grooming.",
+            dachshundConsider: "Its long back needs protection from frequent jumping and excess weight; dachshunds can be stubborn and need patient training.",
+            cockerName: "Cocker Spaniel",
+            cockerLife: "12–15 years",
+            cockerDescription: "A cheerful, medium-sized dog that enjoys walks, play, and close family company.",
+            cockerBenefit: "Affectionate and willing to learn; its size can suit people seeking a dog smaller than a retriever.",
+            cockerConsider: "Its long ears and coat need regular care; it needs daily activity, and neglected ears are more prone to infection.",
+            borderLife: "12–15 years",
+            borderDescription: "A highly intelligent herding dog, popular with active people who enjoy training.",
+            borderBenefit: "Learns quickly and excels at sports and tasks; it suits an owner who enjoys daily activity.",
+            borderConsider: "Not an easy match for a low-activity home: it needs substantial exercise, mental work, and consistent guidance.",
+            jackLife: "13–16 years",
+            jackDescription: "A small, energetic terrier that needs activities and an involved owner.",
+            jackBenefit: "Bright, cheerful, and portable; scent games and short training sessions are easy to fit into the day.",
+            jackConsider: "Small does not mean low-energy: it can be vocal, has a strong chase instinct, and needs exercise and stimulation.",
+            boxerName: "Boxer",
+            boxerLife: "10–12 years",
+            boxerDescription: "A cheerful, strong family dog known for attachment to people and a love of shared activities.",
+            boxerBenefit: "Its short coat needs little brushing, and boxers are often affectionate and playful.",
+            boxerConsider: "Large and energetic, it needs training and exercise; it struggles in heat, and health needs may add costs.",
+            huskyName: "Siberian Husky",
+            huskyLife: "12–14 years",
+            huskyDescription: "A sociable sled dog best suited to an active home and a secure environment.",
+            huskyBenefit: "Hardy and people-oriented, it loves long outings; its coat does not need trimming.",
+            huskyConsider: "Not suited to a low-activity routine: it needs lots of exercise, sheds heavily, and may escape from an unsecured yard.",
+            tagActive: "Active",
+            noResults: "No breeds match your search. Try another name or filter.",
+            ageEyebrow: "A handy estimate",
+            ageTitle: "How old is your dog in human years?",
+            ageDescription: "Dogs mature quickly in their first two years. This rough estimate counts the first year as about 15 human years, the second as 9 more, then around 4 per year. Size and breed matter, so this is a general guide—not a health assessment.",
+            ageLabel: "Your dog's age",
+            yearsPlaceholder: "Years",
+            yearsAria: "Dog's age in years",
+            monthsPlaceholder: "Enter 0 years first",
+            monthsAria: "Additional months for a dog under one year old",
+            ageMethod: "Enter months only if your dog is under one year old. During the first year, 12 dog months are roughly 15 human years—an average of about 1.25 human years per month. This is only a simplification; dogs do not develop at a constant rate.",
+            calculate: "Calculate",
+            footerMade: "Moss & Whiskers · For everyone who loves dogs.",
+            footerNote: "Breed traits and lifespans are estimates; every dog is unique."
+        };
+
+        const originalText = new Map(
+            [...document.querySelectorAll("[data-i18n]")].map((element) => [element, element.textContent])
+        );
+        const originalAttributes = new Map(
+            [...document.querySelectorAll("[data-i18n-placeholder], [data-i18n-aria-label], [data-i18n-alt]")]
+                .map((element) => [element, {
+                    placeholder: element.getAttribute("placeholder"),
+                    ariaLabel: element.getAttribute("aria-label"),
+                    alt: element.getAttribute("alt")
+                }])
+        );
+
+        function setLanguage(language) {
+            currentLanguage = language;
+            const isEnglish = language === "en";
+            document.documentElement.lang = language;
+
+            originalText.forEach((polishValue, element) => {
+                element.textContent = isEnglish ? englishText[element.dataset.i18n] : polishValue;
+            });
+
+            originalAttributes.forEach((polishValues, element) => {
+                for (const [attribute, keyAttribute] of [
+                    ["placeholder", "i18nPlaceholder"],
+                    ["aria-label", "i18nAriaLabel"],
+                    ["alt", "i18nAlt"]
+                ]) {
+                    const translationKey = element.dataset[keyAttribute];
+                    if (translationKey) {
+                        const originalAttribute = attribute === "aria-label"
+                            ? "ariaLabel"
+                            : attribute;
+                        element.setAttribute(attribute, isEnglish ? englishText[translationKey] : polishValues[originalAttribute]);
+                    }
+                }
+            });
+
+            document.title = isEnglish
+                ? "Moss & Whiskers | A dog guide"
+                : "Moss & Whiskers | Przewodnik po psach";
+            document.querySelector('meta[name="description"]').content = isEnglish
+                ? "A friendly guide to dog breeds found in Poland, with practical care notes and a dog age calculator."
+                : "Przyjazny przewodnik po rasach psów spotykanych w Polsce, z praktycznymi wskazówkami i kalkulatorem wieku psa.";
+            languageToggle.textContent = isEnglish ? "PL" : "EN";
+            languageToggle.setAttribute(
+                "aria-label",
+                isEnglish ? "Switch language to Polish" : "Zmień język na angielski"
+            );
+            themeLabel.textContent = isEnglish
+                ? (document.body.classList.contains("light-mode") ? "Dark mode" : "Light mode")
+                : (document.body.classList.contains("light-mode") ? "Tryb ciemny" : "Tryb jasny");
+
+            if (ageResult.dataset.result === "calculated") {
+                showAgeResult(Number(yearsInput.value) * 12 + Number(monthsInput.value));
+            } else if (ageResult.dataset.result === "invalid") {
+                ageResult.textContent = isEnglish
+                    ? "Please enter an age of 30 years or less."
+                    : "Wpisz wiek nieprzekraczający 30 lat.";
+            }
+        }
+
+        function filterBreeds() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+
+            breedCards.forEach((card) => {
+                const matchesName = card.dataset.name.includes(searchTerm) || card.dataset.namePl.includes(searchTerm);
+                const matchesFilter = activeFilter === "all" || card.dataset.traits.split(" ").includes(activeFilter);
+                const isVisible = matchesName && matchesFilter;
+
+                card.hidden = !isVisible;
+                visibleCount += Number(isVisible);
+            });
+
+            noResults.hidden = visibleCount > 0;
+        }
+
+        searchInput.addEventListener("input", filterBreeds);
+
+        function updateMonthsAvailability() {
+            const isUnderOneYear = yearsInput.value === "0";
+            monthsInput.disabled = !isUnderOneYear;
+            monthsInput.required = isUnderOneYear;
+
+            if (!isUnderOneYear) {
+                monthsInput.value = "";
+            }
+        }
+
+        yearsInput.addEventListener("input", updateMonthsAvailability);
+        yearsInput.addEventListener("change", updateMonthsAvailability);
+
+        document.querySelector(".filter-list").addEventListener("click", (event) => {
+            const selectedButton = event.target.closest(".filter-button");
+            if (!selectedButton) {
+                return;
+            }
+
+            activeFilter = selectedButton.dataset.filter;
+            filterButtons.forEach((button) => {
+                const isActive = button === selectedButton;
+                button.classList.toggle("active", isActive);
+                button.setAttribute("aria-pressed", String(isActive));
+            });
+
+            filterBreeds();
+        });
+
+        themeToggle.addEventListener("click", () => {
+            const lightModeEnabled = document.body.classList.toggle("light-mode");
+            themeToggle.setAttribute("aria-pressed", String(!lightModeEnabled));
+            themeLabel.textContent = currentLanguage === "en"
+                ? (lightModeEnabled ? "Dark mode" : "Light mode")
+                : (lightModeEnabled ? "Tryb ciemny" : "Tryb jasny");
+            themeIcon.textContent = lightModeEnabled ? "☾" : "☀";
+        });
+
+        languageToggle.addEventListener("click", () => {
+            setLanguage(currentLanguage === "pl" ? "en" : "pl");
+        });
+
+        function showAgeResult(totalMonths) {
+            const humanYears = totalMonths <= 12
+                ? totalMonths * 15 / 12
+                : totalMonths <= 24
+                    ? 15 + (totalMonths - 12) * 9 / 12
+                    : 24 + (totalMonths - 24) * 4 / 12;
+
+            ageResult.textContent = currentLanguage === "en"
+                ? `About ${Math.round(humanYears)} human years — a rough estimate.`
+                : `Około ${Math.round(humanYears)} lat w przeliczeniu na wiek człowieka (orientacyjnie).`;
+            ageResult.dataset.result = "calculated";
+        }
+
+        ageForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const years = Number(yearsInput.value);
+            const months = years === 0 ? Number(monthsInput.value) : 0;
+            const totalMonths = years * 12 + months;
+            if (totalMonths > 360) {
+                ageResult.textContent = currentLanguage === "en"
+                    ? "Please enter an age of 30 years or less."
+                    : "Wpisz wiek nieprzekraczający 30 lat.";
+                ageResult.dataset.result = "invalid";
+                return;
+            }
+
+            showAgeResult(totalMonths);
+        });
+    </script>
+</body>
+</html>
